@@ -1,7 +1,7 @@
 <template>
   <div>
 		<div id='container'>
-			<div class='title' id='title'><i class='iconfont icon-erji-caidanguanli' style='font-size:25px;margin-right:20%'></i><b>车型库</b></div>
+			<div class='title' id='title' style='overflow:hidden'><i class='iconfont icon-erji-caidanguanli' style='font-size:25px;margin-right:20%'></i><b>车型库</b></div>
 		</div>
 	<div class='nav' id='nav'>
 		<i class='iconfont icon-suohuicaidan- caidan' @click="chooseByta" :style="showNav ? 'display:inline;' : 'display:none'"></i>
@@ -15,21 +15,22 @@
 	<ul class='list' id='list'>
 		<li>
 			<router-link to='/'>
-				<div class='title yiji' @click.self='yiji($event)'>
+				<div class='title yiji' @click='yiji'>
 					<i class='iconfont icon-erji-caidanguanli ileft'></i>
 					<b>车型库</b>
 					<i class='iconfont icon-tubiaozhizuo- iright'  @click='erji1()' :style="show1 ? 'display:inline;' : 'display:none'"></i>
 					<i class='iconfont icon-xiangxiajiantou iright'  @click='erji1()' :style="show1 ? 'display:none;' : 'display:inline'"></i>
 				</div>
 			</router-link>
-			<ul>
-				<router-link to='basic'>
-					<li class='erji'>
-						基础库
-					</li>
-				</router-link>
-			</ul>
+			
 		</li>
+		<ul v-show='erjiShow'>
+			<router-link to='basic'>
+				<li class='erji'>
+					基础库
+				</li>
+			</router-link>
+		</ul>
 		<li>
 			<router-link to='/spu'>
 				<div class='title'>
@@ -62,21 +63,22 @@
 		</li>
 		<li>
 			<router-link to='/work'>
-				<div class='title yiji' @click.self='yiji($event)'>
+				<div class='title yiji' @click='cooper()'>
 					<i class='iconfont icon-icon-edit ileft'></i>
 					<b>合作商分组</b>
 					<i class='iconfont icon-tubiaozhizuo- iright'  @click='erji5()' :style="show5 ? 'display:inline;' : 'display:none'"></i>
 					<i class='iconfont icon-xiangxiajiantou iright'  @click='erji5()' :style="show5 ? 'display:none;' : 'display:inline'"></i>
 				</div>
 			</router-link>
-			<ul>
-				<router-link to='/zxyh'>
-					<li class='erji'>
-						中信银行-线索模式
-					</li>
-				</router-link>
-			</ul>
+			
 		</li>
+		<ul v-show='cooperShow'>
+			<router-link to='/zxyh'>
+				<li class='erji' v-for='item in listPoint'>
+					{{item}}
+				</li>
+			</router-link>
+		</ul>
 	</ul>
 	<ul class='list2' id='list2'>
 		<li style='background:#00284d;'><b>车型库</b></li>
@@ -86,13 +88,12 @@
 		<li><i class='iconfont icon-jinggao'></i></li>
 		<li><i class='iconfont icon-icon-edit'></i></li>
 	</ul>
-	
-	
   </div>
 </template>
 
 <script>
 export default {
+	
 	data(){
 		return{
 			count:0,
@@ -101,18 +102,47 @@ export default {
 			show2:true,
 			show3:true,
 			show4:true,
-			show5:true
+			show5:true,
+			listPoint:[],
+			erjiShow:false,
+			cooperShow:false
 		}
 	},
 	methods:{
-		yiji(e) {
-			this.count++;
-			if( this.count % 2 ){
-				e.target.parentNode.nextElementSibling.style.display='block';
-				
-			}else{
-				e.target.parentNode.nextElementSibling.style.display='none';
-			}	
+		yiji() {
+			this.erjiShow = !this.erjiShow
+		},
+		cooper(){
+			this.cooperShow = !this.cooperShow
+			let params = {"jsfType" :"marqueMerchantResource_queryMerGroListService",
+				"valueJsonStr":[{
+					"appCode": "cfbizbaseservice.jr.jd.com",
+					"merchantCode": "123"
+				}]
+			}
+			this.$http.post('/gateway/invokeJsf',params)
+			.then( function ( res ) {
+				//console.log( res.data.object.merGroInfos )
+				/* if( res.data.object.code == "SUCCESS" ){
+					this.tableData1 = res.data.object.merGroInfos
+				}else{
+					alert('请求失败')
+				} */
+				//console.log(res.data.object.merGroInfos)
+				let listMer = res.data.object.merGroInfos;
+				let listLen = listMer.length;
+				for(var i=0; i<listLen; i++ ){
+					for( var key in listMer[i] ){
+						if( key =="merGroName"){
+							this.listPoint.push( listMer[i]["merGroName"] ) 
+						}
+						
+					}
+				}
+			}.bind(this))
+			.catch( function( error ) {
+				console.log( error )
+			}.bind(this))
 		},
 		erji1(){
 			this.show1 = !this.show1

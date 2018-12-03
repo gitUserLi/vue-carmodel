@@ -192,19 +192,12 @@
 				let params = {"jsfType":"marqueInfoResource_queryMarqueInfoList",
 					"valueJsonStr":[{
 						"marqueInfoId": "info18112510007139",
-					   "appCode": "cfbizbaseservice.jr.jd.com"
+						"appCode": "cfbizbaseservice.jr.jd.com"
 					}]
 				}
 				this.$http.post('/gateway/invokeJsf',params)
 				.then( function ( res ) {
-					var titleList = res.data.object.marqueInfoVoList[0].marqueCfgInfo;
-					console.log( res.data.object.marqueInfoVoList[0].marqueCfgInfo )
-					console.log( Object.keys( res.data.object.marqueInfoVoList[0].marqueCfgInfo ).size )
-					var num = 0;
-					for(var i in titleList){
-						num++
-					}
-					console.log(num);
+					console.log(res);
 					
 				}.bind(this))
 				.catch( function( error ) {

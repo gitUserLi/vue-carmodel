@@ -83,8 +83,8 @@
 				
 				<div class='htitle'><h2 style='font-size:16px;'>价格信息</h2></div>
 				<div class='onediv'>
-					<el-form-item label="厂商指导价 : " prop="price">
-						<el-input type="text" v-model="ruleForm2.price" auto-complete="off" placeholder="请输入品牌名称"></el-input>
+					<el-form-item label="厂商指导价 : " prop="guidePrice">
+						<el-input type="text" v-model="ruleForm2.guidePrice" auto-complete="off" placeholder="请输入品牌名称"></el-input>
 					</el-form-item>
 				</div>
 				
@@ -92,11 +92,14 @@
 				<div style="border-bottom:1px dashed #f2f2f2;padding-bottom:150px;" class='hcontent' v-show='showDate2'>
 					<div id='elupload' style='display:inline-block'>
 						<el-upload
-							action="https://jsonplaceholder.typicode.com/posts/"
+							action="http://172.25.35.204:8304/img/upload"
 							ref="upload"
 							list-type="picture-card"
 							:limit=1
-							:auto-upload=false
+							:auto-upload="true"
+							:on-error="uploadFail"
+							:on-exceed="handleExceed"
+							:on-progress="uploadProgress"
 							:on-success="uploadSuccess"
 							:on-preview="handlePictureCardPreview"  
 							:on-remove="handleRemove">  <!-- 点击文件列表中已上传的文件时的钩子 --><!-- 文件列表移除文件时的钩子 -->
@@ -111,10 +114,12 @@
 					</div>
 					<div id='elupload2' style='display:inline-block'>
 						<el-upload
-							action="https://jsonplaceholder.typicode.com/posts/"
+							action="http://172.25.35.204:8304/img/upload"
 							list-type="picture-card"
 							:limit=1
-							:auto-upload=false
+							:auto-upload="false"
+							:on-error="uploadFail"
+							:on-success ="uploadSuccess"
 							:on-preview="handlePictureCardPreview"  
 							:on-remove="handleRemove">  <!-- 点击文件列表中已上传的文件时的钩子 --><!-- 文件列表移除文件时的钩子 -->
 							<i class="el-icon-plus"></i>
@@ -127,10 +132,12 @@
 					</div>
 					<div id='elupload3' style='display:inline-block'>
 						<el-upload
-							action="https://jsonplaceholder.typicode.com/posts/"
+							action="http://172.25.35.204:8304/img/upload"
 							list-type="picture-card"
 							:limit=1
-							:auto-upload=false
+							:on-error="uploadFail"
+							:auto-upload="false"
+							:on-success ="uploadSuccess"
 							:on-preview="handlePictureCardPreview"  
 							:on-remove="handleRemove">  <!-- 点击文件列表中已上传的文件时的钩子 --><!-- 文件列表移除文件时的钩子 -->
 							<i class="el-icon-plus"></i>
@@ -147,8 +154,8 @@
 				<div class='onediv' style='margin-top:10px;margin-bottom:20px'>
 					<h2 style='font-size:16px;'>车型颜色</h2>
 					<div v-for="(item,i) of items2" v-model="items2[i]" :key="i" id='newcolor'>
-						<el-form-item :label="'颜色 '+(i+1)+':'" prop="color[i]" >
-							<el-input type="text" v-model="ruleForm2.color[i]" auto-complete="off" placeholder="请输入颜色"></el-input>
+						<el-form-item :label="'颜色 '+(i+1)+':'" prop="marqueColor[i]" >
+							<el-input type="text" v-model="ruleForm2.marqueColor[i]" auto-complete="off" placeholder="请输入颜色"></el-input>
 						</el-form-item>			
 					</div>
 					<div id="btn" @click='xzys'>新增颜色</div>
@@ -233,10 +240,20 @@
 					value2:'',
 					value3:'',
 					value4:'',
-					price:'',
+					marqueId0:'',
+					marqueId1:'',
+					marqueId4:'',
+					marqueId2:'',
+					marqueId3:'',
+					parentId0:'',
+					parentId1:'',
+					parentId4:'',
+					parentId2:'',
+					parentId3:'',
+					guidePrice:'',
 					bindName: ['',''],
 					bindParms: ['',''],
-					color:['','']
+					marqueColor:['','']
 				},
 				dialogImageUrl: '',
 				dialogVisible: false,
@@ -341,8 +358,18 @@
 				console.log(file, fileList);
 			},
 			uploadSuccess( response,file,fileList ){
-				alert(0)
-				this.$refs.upload.clearFiles()
+				
+				console.log( response,file,fileList)
+				//this.$refs.upload.clearFiles()
+			},
+			uploadFail( response,file,fileList ){
+				console.log(response)
+			},
+			uploadProgress( event,file,fileList ){
+				console.log(event)
+			},
+			handleExceed( ){
+				alert('只能上传一张图片')
 			},
 			currentSel(selVal){   //点击厂商列表 , 品牌列表有值	
 				this.selVal = selVal;  // 当前所选的值
@@ -352,7 +379,9 @@
 				  return item.marqueName === selVal 
 				});
 				//obj 就是被选中的那个对象，
-				let parentId = obj.marqueId;
+				let parentId = obj.marqueId;   
+				this.ruleForm2.marqueId0 = obj.marqueId ;  // 点击那个显示那个 mqrqueId
+				this.ruleForm2.parentId0 = obj.parentId ;
 				let params = {"jsfType":"marqueBaseResource_queryMarqueBaseListByPId",
 					"valueJsonStr":[{
 						"parentId": parentId, 
@@ -383,7 +412,9 @@
 					return item.marqueName === selVal 
 				});
 				//obj 就是被选中的那个对象，
-				let parentId = obj.marqueId;
+				let parentId = obj.marqueId;  
+				this.ruleForm2.marqueId1 = obj.marqueId ;  // 点击那个显示那个 mqrqueId
+				this.ruleForm2.parentId1 = obj.parentId ;
 				let params = {"jsfType":"marqueBaseResource_queryMarqueBaseListByPId",
 					"valueJsonStr":[{
 						"parentId": parentId, 
@@ -415,6 +446,8 @@
 				});
 				//obj 就是被选中的那个对象，
 				let parentId = obj.marqueId;
+				this.ruleForm2.marqueId4 = obj.marqueId ;  // 点击那个显示那个 mqrqueId
+				this.ruleForm2.parentId4 = obj.parentId ;
 				let params = {"jsfType":"marqueBaseResource_queryMarqueBaseListByPId",
 					"valueJsonStr":[{
 						"parentId": parentId, 
@@ -446,6 +479,8 @@
 				});
 				//obj 就是被选中的那个对象，
 				let parentId = obj.marqueId;
+				this.ruleForm2.marqueId2 = obj.marqueId ;  // 点击那个显示那个 mqrqueId
+				this.ruleForm2.parentId2 = obj.parentId ;
 				let params = {"jsfType":"marqueBaseResource_queryMarqueBaseListByPId",
 					"valueJsonStr":[{
 						"parentId": parentId, 
@@ -468,9 +503,16 @@
 				}.bind(this)) 
 			},
 			currentSel3( selVal ){
-				
 				this.selVal = selVal ;
-				console.log(selVal)
+				//console.log( this.selVal )
+				var obj = {};
+				obj = this.options3.find(function(item){
+					return item.marqueName === selVal 
+				});
+				//obj 就是被选中的那个对象，
+				let parentId = obj.marqueId;
+				this.ruleForm2.marqueId3 = obj.marqueId ;  // 点击那个显示那个 mqrqueId
+				this.ruleForm2.parentId3 = obj.parentId ;
 			},
 			handlePictureCardPreview(file) {
 				this.dialogImageUrl = file.url;
@@ -485,51 +527,88 @@
 						return false;
 					}
 				}); */
-				//console.log( this.ruleForm2.value ,this.ruleForm2.value2 , this.ruleForm2.value1 ,this.ruleForm2.value3,this.ruleForm2.value4 )
-				//console.log( JSON.stringify(this.ruleForm2.price),JSON.stringify(this.ruleForm2.bindName),JSON.stringify(this.ruleForm2.bindParms),
-				//JSON.stringify(this.ruleForm2.color))
-				//console.log(event)
-				//console.log( JSON.stringify( this.marqueCfgInfo ))
 				let sult = [{
 								"marqueName": this.ruleForm2.value,
-								"marqueId": "base18112510007134",
+								"marqueId": this.ruleForm2.marqueId0,
+								"parentId": this.ruleForm2.parentId0,
 								"baseType": 1,
 							},
 							{
 								"marqueName": this.ruleForm2.value1,
-								"marqueId": "base18112510007134",
+								"marqueId": this.ruleForm2.marqueId1,
+								"parentId": this.ruleForm2.parentId1,
 								"baseType": 2,
 							},
 							{
 								"marqueName": this.ruleForm2.value4,
-								"marqueId": "base18112510007134",
+								"marqueId": this.ruleForm2.marqueId4,
+								"parentId": this.ruleForm2.parentId4,
 								"baseType": 3,
 							},
 							{
 								"marqueName": this.ruleForm2.value2,
-								"marqueId": "base18112510007134",
+								"marqueId": this.ruleForm2.marqueId2,
+								"parentId": this.ruleForm2.parentId2,
 								"baseType": 4,
 							},
 							{
 								"marqueName": this.ruleForm2.value3,
-								
+								"marqueId": this.ruleForm2.marqueId3,
+								"parentId": this.ruleForm2.parentId3,
 								"baseType": 5,
 							}] 
-						/* var list = new Array();
-						var listobj = {}	list.psuh(sult)
-				console.log( list ) */
-				console.log( JSON.stringify( sult ) )
+				let len = sult.length;
+				for( var i = 0; i<len ; i++){
+					
+					for( var key in sult[i] ){
+						//console.log( key+ ':'+ sult[i][key])
+						if( key == "marqueName"){
+							if( sult[i].marqueId == "" ){
+								sult[ sult[i].baseType-1 ].parentId = sult[ sult[i].baseType - 2 ].marqueId
+							}
+						}
+						
+					}
+				}
+				var dataList = new Array();
+				var sublistData = {}; 
+				sublistData["baseCascadeList"] = sult;
+				
+				// 车辆参数
+				var carParms = {};
+				var leng = this.ruleForm2.bindName.length;
+				for(var i=0; i<leng; i++ ){
+					carParms[ this.ruleForm2.bindName[i] ] =  this.ruleForm2.bindParms[i]
+				}
+				sublistData["marqueCfgInfo"] = JSON.stringify( carParms );
+				//console.log( JSON.stringify( carParms ) )
+				
+				//颜色
+				sublistData["marqueColor"] = JSON.stringify( this.ruleForm2.marqueColor) ;
+				
+				sublistData["marqueType"] = 1 ;
+				
+				sublistData["appCode"] = "cfbizbaseservice.jr.jd.com";
+				
+				//console.log( JSON.stringify( sublistData ) )
+				let SaveMarqueReqVo = JSON.stringify( sublistData ) ;
+				//console.log(sublistData)
+				let params = {"jsfType":"marqueBaseResource_saveMarqueBaseAndInfo",
+					"valueJsonStr": [SaveMarqueReqVo]
+				}
+				this.$http.post('/gateway/invokeJsf',params)
+				.then( function ( res ) {
+					console.log( res )
+				}.bind(this))
+				.catch( function( error ) {
+					console.log( error )
+				}.bind(this))
+					
 			},
 			resetForm(){
-				/* this.$nextTick(()=>{
-					this.$refs[ruleForm2].resetFields();
-				}) */
 				this.$refs.ruleForm2.resetFields()
-				//this.$refs[ruleForm2].resetFields();
-				/* if (this.$refs[ruleForm2] !== undefined) {
-					this.$refs[ruleForm2].resetFields();
-				} */
 			},
+
 			loadData(){
 				let params = {"jsfType":"marqueBaseResource_queryMarqueBaseListByPId",
 					"valueJsonStr":[{
@@ -548,14 +627,6 @@
 					
 					for( var i=0; i<len; i++){
 						this.options.push( obj[i] )
-						console.log( obj[i] )
-						
-						var obj = {};
-						obj = this.options4.find(function(item){
-							return item.marqueName === selVal 
-						});
-						
-						
 					}
 					//console.log(this.options)
 					this.options = this.options

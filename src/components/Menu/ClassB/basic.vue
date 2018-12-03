@@ -318,7 +318,7 @@
 			loadDate(){/* 其他接口改变这里面的值 */
 				let params = {"jsfType":"marqueInfoResource_queryMarqueInfoList",
 					"valueJsonStr":[{          
-						"startRow": 0,
+						"currentPageNum": 0,
 						"rowSize": 0,
 						"appCode": "cfbizbaseservice.jr.jd.com"
 					}]
@@ -328,7 +328,7 @@
 					//console.log( res )
 					if( res.data.code == '200'){
 						this.tableData1 = res.data.object.marqueInfoVoList ;
-						console.log( res.data.object.marqueInfoVoList )
+						//console.log( res.data.object.marqueInfoVoList )
 					}else{
 						return false;
 					}	
