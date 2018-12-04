@@ -123,6 +123,8 @@
 </template>
 
 <script>
+	import FileSaver from 'file-saver'
+	import XLSX from 'xlsx'
 	export default{
 		inject: ["reload"],
 		data(){
@@ -173,7 +175,6 @@
           }) 
 					})*/
 					this.strid = val[0].marqueInfoId.toString() 
-					
 			},
 			importData() {
 				return false;
@@ -192,11 +193,15 @@
 				//console.log( params )
 				this.$http.post('/gateway/exportCSV',params)
 				.then( function ( res ) {
-					console.log( res )
+					
+					
+					console.log( res.data )
 				})
 				.catch( function( error ) {
 					console.log( error )
 				})
+				
+
 			},
 			handlePreview(file) {
 				//可以通过 file.response 拿到服务端返回数据
@@ -250,7 +255,7 @@
 				//alert('submit!');
 				let params = {"jsfType" : "marqueInfoResource_queryMarqueInfoList",
 					"valueJsonStr":[{          
-						"startRow": this.currentPage,
+						"currentPageNum": this.currentPage,
 						"rowSize": this.pagesize,
 						"appCode": "cfbizbaseservice.jr.jd.com",
 						"vendor": this.vendor,
@@ -264,9 +269,11 @@
 				this.$http.post('/gateway/invokeJsf',params)
 				.then( function ( res ) {
 					//console.log(res)
+					//this.tableData1 = [];
 					if( res.data.code == '200'){
-						console.log( res.data.object  )
-						this.tableData1 = res.data.object.marqueInfoVoList 
+						console.log( res.data.object.marqueInfoVoList  )
+						//this.tableData1 = res.data.object.marqueInfoVoList ;
+						
 					}else{
 						return false
 					}
@@ -284,11 +291,17 @@
 				this.currentPage = val;
 				//console.log( this.currentPage )
 			},
+			//显示编辑界面
 			editClick( index ){
-				this.$router.push({path:'/basicedit'})
+				//console.log( this.tableData1[index].marqueInfoId, this.tableData1[index].appCode )
+				this.$router.push({
+					path:'/basicedit',
+					query:{
+						"marqueInfoId":this.tableData1[ index ].marqueInfoId
+					}
+				}); 
 			},
 			delteClick( index){
-				alert(index)
 				//alert( index )
 				let marqueInfoId = this.tableData1[ index ].marqueInfoId;
 				let params = {"jsfType" : "marqueInfoResource_deleteMarqueInfoByInfoId",
@@ -299,18 +312,17 @@
 				}
 				this.$http.post('/gateway/invokeJsf',params)
 				.then( function ( res ) {
-					console.log(res)
+					//console.log( res )
 					if( res.data.code == '200'){
-						this.addVisible = false;
-						this.reload();
-						alert('删除成功')
+						this.tableData1 = [] ;
+						//console.log( res.data.object.marqueInfoVoList )
 					}else{
 						return false;
-					}
-				})
+					}	
+				}.bind(this))
 				.catch( function( error ) {
 					console.log( error )
-				})
+				}.bind(this))
 			},// 点击新增按钮
 			newAdd(){
 				this.$router.push( { path: '/newmodel'})
@@ -318,8 +330,8 @@
 			loadDate(){/* 其他接口改变这里面的值 */
 				let params = {"jsfType":"marqueInfoResource_queryMarqueInfoList",
 					"valueJsonStr":[{          
-						"currentPageNum": 0,
-						"rowSize": 0,
+						"currentPageNum": this.currentPage,
+						"rowSize": this.pagesize,
 						"appCode": "cfbizbaseservice.jr.jd.com"
 					}]
 				}

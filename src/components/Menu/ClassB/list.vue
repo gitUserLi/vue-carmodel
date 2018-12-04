@@ -174,11 +174,9 @@
 						this.addVisible = false;
 						this.reload();
 						alert('删除成功')
-						
 					}else{
 						return false;
 					}
-					
 				}.bind(this))
 				.catch( function( error ) {
 					alert('查询失败')

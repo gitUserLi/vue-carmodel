@@ -84,7 +84,7 @@
 				<div class='htitle'><h2 style='font-size:16px;'>价格信息</h2></div>
 				<div class='onediv'>
 					<el-form-item label="厂商指导价 : " prop="guidePrice">
-						<el-input type="text" v-model="ruleForm2.guidePrice" auto-complete="off" placeholder="请输入品牌名称"></el-input>
+						<el-input type="text" v-model="ruleForm2.guidePrice" auto-complete="off" placeholder="请输入指导价格" @keyup.enter.native="doLogin($event)"></el-input>
 					</el-form-item>
 				</div>
 				
@@ -92,8 +92,8 @@
 				<div style="border-bottom:1px dashed #f2f2f2;padding-bottom:150px;" class='hcontent' v-show='showDate2'>
 					<div id='elupload' style='display:inline-block'>
 						<el-upload
-							action="http://172.25.35.204:8304/img/upload"
 							ref="upload"
+							action="http://172.25.35.204:8304/img/upload"
 							list-type="picture-card"
 							:limit=1
 							:auto-upload="true"
@@ -101,7 +101,7 @@
 							:on-exceed="handleExceed"
 							:on-progress="uploadProgress"
 							:on-success="uploadSuccess"
-							:on-preview="handlePictureCardPreview"  
+							:on-preview="handlePictureCardPreview1"  
 							:on-remove="handleRemove">  <!-- 点击文件列表中已上传的文件时的钩子 --><!-- 文件列表移除文件时的钩子 -->
 							<i class="el-icon-plus"></i>
 							
@@ -117,10 +117,10 @@
 							action="http://172.25.35.204:8304/img/upload"
 							list-type="picture-card"
 							:limit=1
-							:auto-upload="false"
+							:auto-upload="true"
 							:on-error="uploadFail"
 							:on-success ="uploadSuccess"
-							:on-preview="handlePictureCardPreview"  
+							:on-preview="handlePictureCardPreview2"  
 							:on-remove="handleRemove">  <!-- 点击文件列表中已上传的文件时的钩子 --><!-- 文件列表移除文件时的钩子 -->
 							<i class="el-icon-plus"></i>
 						</el-upload>
@@ -136,12 +136,11 @@
 							list-type="picture-card"
 							:limit=1
 							:on-error="uploadFail"
-							:auto-upload="false"
+							:auto-upload="true"
 							:on-success ="uploadSuccess"
-							:on-preview="handlePictureCardPreview"  
+							:on-preview="handlePictureCardPreview3"  
 							:on-remove="handleRemove">  <!-- 点击文件列表中已上传的文件时的钩子 --><!-- 文件列表移除文件时的钩子 -->
 							<i class="el-icon-plus"></i>
-							
 						</el-upload>
 						<span class='span2'>宣传图</span>
 						<span class='span1'>320X200</span>
@@ -154,6 +153,7 @@
 				<div class='onediv' style='margin-top:10px;margin-bottom:20px'>
 					<h2 style='font-size:16px;'>车型颜色</h2>
 					<div v-for="(item,i) of items2" v-model="items2[i]" :key="i" id='newcolor'>
+						
 						<el-form-item :label="'颜色 '+(i+1)+':'" prop="marqueColor[i]" >
 							<el-input type="text" v-model="ruleForm2.marqueColor[i]" auto-complete="off" placeholder="请输入颜色"></el-input>
 						</el-form-item>			
@@ -253,7 +253,7 @@
 					guidePrice:'',
 					bindName: ['',''],
 					bindParms: ['',''],
-					marqueColor:['','']
+					marqueColor:[]
 				},
 				dialogImageUrl: '',
 				dialogVisible: false,
@@ -357,12 +357,41 @@
 			handleRemove(file, fileList) {
 				console.log(file, fileList);
 			},
-			uploadSuccess( response,file,fileList ){
+			beforeUpload( file ){
+				//console.log( file );
+				/* let fd = new FormData()
+				fd.append('file', file)
 				
+				this.$http({
+					method: 'post',
+					url: 'http://172.25.35.204:8304/img/upload',
+					data: fd
+				})
+				.then(function(res){
+					console.log(res)
+				})
+				.catch(function(error){
+					console.log( error )
+				}) */
+				
+				/* axios.post('/user', {
+					firstName: 'Fred',
+					lastName: 'Flintstone'
+				})
+				.then(function (response) {
+					console.log(response);
+				})
+				.catch(function (error) {
+					console.log(error);
+				}); */
+			},
+			uploadSuccess( response,file,fileList ){
+				alert('uploadSuccess')
 				console.log( response,file,fileList)
 				//this.$refs.upload.clearFiles()
 			},
 			uploadFail( response,file,fileList ){
+				alert('uploadFail')
 				console.log(response)
 			},
 			uploadProgress( event,file,fileList ){
@@ -370,6 +399,12 @@
 			},
 			handleExceed( ){
 				alert('只能上传一张图片')
+			},
+			doLogin(e){
+				if( isNaN( this.ruleForm2.guidePrice) ){
+					this.ruleForm2.guidePrice = null;
+					alert('请输入数字类型')
+				}
 			},
 			currentSel(selVal){   //点击厂商列表 , 品牌列表有值	
 				this.selVal = selVal;  // 当前所选的值
@@ -514,8 +549,16 @@
 				this.ruleForm2.marqueId3 = obj.marqueId ;  // 点击那个显示那个 mqrqueId
 				this.ruleForm2.parentId3 = obj.parentId ;
 			},
-			handlePictureCardPreview(file) {
-				this.dialogImageUrl = file.url;
+			handlePictureCardPreview1(file) {
+				this.dialogImageUrl1 = file.url;
+				this.dialogVisible = true;
+			},
+			handlePictureCardPreview2(file) {
+				this.dialogImageUrl2 = file.url;
+				this.dialogVisible = true;
+			},
+			handlePictureCardPreview3(file) {
+				this.dialogImageUrl3 = file.url;
 				this.dialogVisible = true;
 			},
 			submitForm(event){
@@ -527,6 +570,7 @@
 						return false;
 					}
 				}); */
+				
 				let sult = [{
 								"marqueName": this.ruleForm2.value,
 								"marqueId": this.ruleForm2.marqueId0,
@@ -558,15 +602,25 @@
 								"baseType": 5,
 							}] 
 				let len = sult.length;
+				let num = 0;
 				for( var i = 0; i<len ; i++){
 					
 					for( var key in sult[i] ){
-						//console.log( key+ ':'+ sult[i][key])
+						//console.log( sult[i]["marqueId"])
+						
 						if( key == "marqueName"){
+							num++;
 							if( sult[i].marqueId == "" ){
 								sult[ sult[i].baseType-1 ].parentId = sult[ sult[i].baseType - 2 ].marqueId
+								
+							}else if(  sult[i].marqueId != "" ){
+								if(num==5){
+									alert('该车型已存在,可以去编辑页面操作修改')
+									return false;
+								}
+								
 							}
-						}
+						}		
 						
 					}
 				}
@@ -580,22 +634,34 @@
 				for(var i=0; i<leng; i++ ){
 					carParms[ this.ruleForm2.bindName[i] ] =  this.ruleForm2.bindParms[i]
 				}
-				sublistData["marqueCfgInfo"] = JSON.stringify( carParms );
+				sublistData["marqueCfgInfo"] = carParms;
 				//console.log( JSON.stringify( carParms ) )
 				
 				//颜色
-				sublistData["marqueColor"] = JSON.stringify( this.ruleForm2.marqueColor) ;
+				let carColor = this.ruleForm2.marqueColor;
+				let carC = carColor.join(",");
+				
+				sublistData["marqueColor"] = carC ;
+				
+				// 厂商指导价
+				if( isNaN( this.ruleForm2.guidePrice ) ){
+					alert('厂商指导价必须填写数字类型')
+					return false;
+				}
+				sublistData["guidePrice"] = this.ruleForm2.guidePrice ;
 				
 				sublistData["marqueType"] = 1 ;
 				
 				sublistData["appCode"] = "cfbizbaseservice.jr.jd.com";
 				
+				
 				//console.log( JSON.stringify( sublistData ) )
-				let SaveMarqueReqVo = JSON.stringify( sublistData ) ;
+				//let SaveMarqueReqVo = JSON.stringify( sublistData ) ;
 				//console.log(sublistData)
 				let params = {"jsfType":"marqueBaseResource_saveMarqueBaseAndInfo",
-					"valueJsonStr": [SaveMarqueReqVo]
+					"valueJsonStr": [sublistData]
 				}
+				
 				this.$http.post('/gateway/invokeJsf',params)
 				.then( function ( res ) {
 					console.log( res )
