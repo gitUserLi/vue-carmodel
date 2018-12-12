@@ -10,6 +10,7 @@
 
 <script>
 	
+
 	import Model from '@/components/Menu/ClassA/model'
 	import Content from '@/components/Content/content'
 	export default {

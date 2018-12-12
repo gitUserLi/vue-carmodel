@@ -8,15 +8,11 @@
 			<el-breadcrumb separator="/">
 				<el-breadcrumb-item :to="{ path: '/' }"><b>车型库</b></el-breadcrumb-item>
 			</el-breadcrumb>
-			<el-breadcrumb separator="/">
-				<el-breadcrumb-item :to="{ path: '/' }">高级表单常见于一次性输入和提交大批量数据的场景</el-breadcrumb-item>
-			</el-breadcrumb>
 		</div>
 		<div class='contDiv'>
 			<div class="btndiv">
 				<el-row>
 					<el-button type="primary" @click='newAdd'>新增</el-button>
-
 					<div class='subdiv'>
 						<el-input
 							placeholder="请输入内容"
@@ -31,42 +27,14 @@
 				<el-table
 					:data="tableData1.slice((currentPage-1)*pagesize,currentPage*pagesize)"
 					style="width: 100%"
-					max-height="300">
-					<el-table-column
-						type="selection"
-						width="55">
-					</el-table-column>
-					<el-table-column
-						fixed
-						prop="date"
-						label="Date"
-						width="150">
-					</el-table-column>
-					<el-table-column
-						prop="name"
-						label="Name"
-						width="120">
-					</el-table-column>
-					<el-table-column
-						prop="state"
-						label="State"
-						width="120">
-					</el-table-column>
-					<el-table-column
-						prop="city"
-						label="City"
-						width="120">
-					</el-table-column>
-					<el-table-column
-						prop="address"
-						label="Address"
-						width="300">
-					</el-table-column>
-					
-					<el-table-column
-						fixed="right"
-						label="操作"
-						width="120">
+					max-height="400">
+					<el-table-column type="selection" width="55"></el-table-column>
+					<el-table-column fixed prop="date" label="Date" width="150"></el-table-column>
+					<el-table-column prop="name" label="Name" width="120"></el-table-column>
+					<el-table-column prop="state" label="State"width="120"></el-table-column>
+					<el-table-column prop="city" label="City" width="120"></el-table-column>
+					<el-table-column prop="address" label="Address" width="300"></el-table-column>
+					<el-table-column fixed="right" label="操作" width="120">
 						<template slot-scope="scope">
 							<el-button @click="editClick" type="text" size="small">编辑</el-button>
 							<el-button type="text" size="small" @click="delteClick">删除</el-button>
@@ -78,10 +46,9 @@
 					@size-change="handleSizeChange"
 					@current-change="handleCurrentChange"
 					:current-page="currentPage"
-					:page-sizes="[10, 20, 30]"
+					:page-sizes="[10, 30,100]"
 					:page-size="pagesize"
-					layout="total, sizes, prev, pager, next, jumper"
-					>
+					layout="total, sizes, prev, pager, next, jumper">
 				</el-pagination>
 			</div>
 		</div>
@@ -217,9 +184,13 @@
 					city: 'Los Angeles',
 					address: 'No. 189, Grove St, Los Angeles'
 				}],
-				currentPage:2,
+				currentPage:1,
 				pagesize:15
 			}
+		},
+		mounted(){
+			$('.el-input__inner').css({'height':'30px'}),
+			$('.el-input__icon').css({'line-height':'30px'})
 		},
 		methods:{
 			onSubmit() {
@@ -231,6 +202,7 @@
 			handleCurrentChange(val) {
 				this.currentPage = val;
 			},
+			
 			editClick(){
 				alert('编辑页面')
 			},
@@ -255,7 +227,7 @@
 
 	.crumbs{
 		width:100%;
-		height:12%;
+		height:8%;
 		background:#fff;
 		padding-left:2%;
 		overflow:hidden;
@@ -270,17 +242,18 @@
 	.contDiv{
 		margin:1% 2%;
 		width:96%;
-		height:70%;
+		height:85%;
 		background:#fff;
 		padding:20px 20px 0 20px;
 		position:absolute;
 		.btndiv{
-			height:60px;
+			height:40px;
 			.el-button{
 				font-size:12px;
 				border:1px solid #1890ff;
 				float:left;
-				height:40px;
+				height:30px;
+				line-height:0px;
 				position:relative;
 				z-index:10;
 			}
@@ -288,7 +261,7 @@
 		.el-pagination{
 			position:absolute;
 			right:5%;
-			bottom:2%;
+			bottom:5%;
 		}
 	}
 	.subdiv{
@@ -298,14 +271,14 @@
 		z-index:10;	
 		.el-input{
 			width:250px;
-			height:40px;
+			height:30px;
 		}
 		.el-button{
 			position:absolute;
 			z-index:10;
 			top:0px;
 			left:250px;
-			height:40px;
+			height:30px;
 		}
 	}
 	.modeldiv{

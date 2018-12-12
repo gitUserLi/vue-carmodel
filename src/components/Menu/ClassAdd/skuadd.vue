@@ -79,15 +79,15 @@
 				<div class='htitle'><h2 style='font-size:16px;'>商品信息</h2><span @click='skuzd2'>折叠</span></div>
 				<div style="border-bottom:1px dashed #f2f2f2;overflow:auto;" class='hcontent' v-show='skuzdb'>
 					<el-form-item label="商品长名称: " prop="number">
-						<el-input type="text" v-model="ruleForm2.pass" autocomplete="off" placeholder="华晨宝马3系 2018款 320i M运动套装"></el-input>
+						<el-input type="text" v-model="ruleForm2.pass" auto-complete="off" placeholder="华晨宝马3系 2018款 320i M运动套装"></el-input>
 					</el-form-item>
 					<el-form-item label="商品短名称: " prop="number">
-						<el-input type="text" v-model="ruleForm2.pass" autocomplete="off" placeholder="华晨宝马3系"></el-input>
+						<el-input type="text" v-model="ruleForm2.pass" auto-complete="off" placeholder="华晨宝马3系"></el-input>
 					</el-form-item>
 					
 					<div v-for="(item,i) of items3" v-model="items3[i]" :key="i" id='newcolor'>
 						<el-form-item label="商品标签: " prop="number">
-							<el-input type="text" v-model="ruleForm2.pass" autocomplete="off" placeholder="双十一"></el-input>
+							<el-input type="text" v-model="ruleForm2.pass" auto-complete="off" placeholder="双十一"></el-input>
 						</el-form-item>
 					</div>
 					<div class="button" @click='xzbq' style='width:10%;'>新增标签</div>
@@ -96,21 +96,21 @@
 				<div class='htitle'><h2 style='font-size:16px;'>金融方案</h2><span @click='skuzd3'>折叠</span></div>
 				<div style="border-bottom:1px dashed #f2f2f2;overflow:auto;" class='hcontent' v-for="(item,i) of items4" v-model="items4[i]" :key="i" id='newcolor' v-show='skuzdc'>
 					<el-form-item label="金融方案1: " prop="number" style='width:100%;'>
-						<el-input type="text" v-model="ruleForm2.pass" placeholder='首付10%' autocomplete="off" style='width:20%'></el-input>
-						<el-input type="text" v-model="ruleForm2.pass" placeholder='36期' autocomplete="off" style='width:15%'></el-input>
-						<el-input type="text" v-model="ruleForm2.pass" placeholder='等额本息%' autocomplete="off" style='width:20%'></el-input>
-						<el-input type="text" v-model="ruleForm2.pass" placeholder='费率5.0%' autocomplete="off" style='width:15%'></el-input>
-						<el-input type="text" v-model="ruleForm2.pass" placeholder='尾款67000.00' autocomplete="off" style='width:25%'></el-input>
+						<el-input type="text" v-model="ruleForm2.pass" placeholder='首付10%' auto-complete="off" style='width:20%'></el-input>
+						<el-input type="text" v-model="ruleForm2.pass" placeholder='36期' auto-complete="off" style='width:15%'></el-input>
+						<el-input type="text" v-model="ruleForm2.pass" placeholder='等额本息%' auto-complete="off" style='width:20%'></el-input>
+						<el-input type="text" v-model="ruleForm2.pass" placeholder='费率5.0%' auto-complete="off" style='width:15%'></el-input>
+						<el-input type="text" v-model="ruleForm2.pass" placeholder='尾款67000.00' auto-complete="off" style='width:25%'></el-input>
 					</el-form-item>
 				</div>
 
 				<div class='htitle'><h2 style='font-size:16px;'>价格信息</h2><span  @click='skuzd4'>折叠</span></div>
 				<div style="border-bottom:1px dashed #f2f2f2;overflow:auto;" class='hcontent' v-show='skuzdd'>
 					<el-form-item label="销售价: ">
-						<el-input type="text" v-model="ruleForm2.pass" autocomplete="off" placeholder="12000.00"></el-input>
+						<el-input type="text" v-model="ruleForm2.pass" auto-complete="off" placeholder="12000.00"></el-input>
 					</el-form-item>
 					<el-form-item label="库存: ">
-						<el-input type="text" v-model="ruleForm2.pass" autocomplete="off" placeholder="100"></el-input>
+						<el-input type="text" v-model="ruleForm2.pass" auto-complete="off" placeholder="100"></el-input>
 					</el-form-item>
 					<el-form-item label="上下架状态: " style='width:40%;'>
 						<el-select v-model="value1" filterable>
@@ -285,7 +285,7 @@
 <style lang='scss' scoped>
 	.crumbs{
 		width:100%;
-		height:12%;
+		height:7%;
 		background:#fff;
 		padding-left:2%;
 		overflow:hidden;
@@ -300,7 +300,7 @@
 	.contDiv{
 		margin:1% 2%;
 		width:96%;
-		height:70%;
+		height:85%;
 		background:#fff;
 		padding:20px 20px 0 20px;
 		position:absolute;

@@ -438,7 +438,7 @@
 <style lang='scss' scoped>
 	.crumbs{
 		width:100%;
-		height:12%;
+		height:8%;
 		background:#fff;
 		padding-left:2%;
 		overflow:hidden;
@@ -453,7 +453,7 @@
 	.contDiv{
 		margin:1% 2%;
 		width:96%;
-		height:70%;
+		height:85%;
 		background:#fff;
 		padding:20px 20px 0 20px;
 		position:absolute;

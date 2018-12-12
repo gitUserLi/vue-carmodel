@@ -14,70 +14,77 @@
 	</div>
 	<ul class='list' id='list'>
 		<li>
-			<router-link to='/'>
+		<!-- 	<router-link to='/'> -->
 				<div class='title yiji' @click='yiji'>
 					<i class='iconfont icon-erji-caidanguanli ileft'></i>
 					<b>车型库</b>
-					<i class='iconfont icon-tubiaozhizuo- iright'  @click='erji1()' :style="show1 ? 'display:inline;' : 'display:none'"></i>
-					<i class='iconfont icon-xiangxiajiantou iright'  @click='erji1()' :style="show1 ? 'display:none;' : 'display:inline'"></i>
+					<i class='iconfont icon-tubiaozhizuo- iright' :style="show1 ? 'display:inline;' : 'display:none'"></i>
+					<i class='iconfont icon-xiangxiajiantou iright' :style="show1 ? 'display:none;' : 'display:inline'"></i>
 				</div>
-			</router-link>
+			<!-- </router-link> -->
 			
 		</li>
 		<ul v-show='erjiShow'>
 			<router-link to='basic'>
-				<li class='erji'>
+				<li :class="['erji',hasSubStr($route.path, 'basic')?'active':'']">
 					基础库
 				</li>
 			</router-link>
 		</ul>
 		<li>
-			<router-link to='/spu'>
-				<div class='title'>
+			<!-- <router-link to='/spu'> -->
+			<div @click='erji2'>
+				<div :class="['title',hasSubStr($route.path, 'spu')?'active':'']">
 					<i class='iconfont icon-duihao ileft'></i>
 					<b>SPU库</b>
-					<i class='iconfont icon-tubiaozhizuo- iright'  @click='erji2()' :style="show2 ? 'display:inline;' : 'display:none'"></i>
-					<i class='iconfont icon-xiangxiajiantou iright'  @click='erji2()' :style="show2 ? 'display:none;' : 'display:inline'"></i>
+					<i class='iconfont icon-tubiaozhizuo- iright' :style="show2 ? 'display:inline;' : 'display:none'"></i>
+					<i class='iconfont icon-xiangxiajiantou iright' :style="show2 ? 'display:none;' : 'display:inline'"></i>
 				</div>
-			</router-link>
+			</div>
+			<!-- </router-link> -->
 		</li>
 		<li>
-			<router-link to='/sku'>
-				<div class='title'>
+			<!-- <router-link to='/sku'> -->
+			<div @click='erji3'>
+				<div :class="['title',hasSubStr($route.path, 'sku')?'active':'']">
 					<i class='iconfont icon-guanliyuan_guanliyuanrizhi ileft'></i>
 					<b>SKU库</b>
-					<i class='iconfont icon-tubiaozhizuo- iright'  @click='erji3()' :style="show3 ? 'display:inline;' : 'display:none'"></i>
-					<i class='iconfont icon-xiangxiajiantou iright'  @click='erji3()' :style="show3 ? 'display:none;' : 'display:inline'"></i>
+					<i class='iconfont icon-tubiaozhizuo- iright'  :style="show3 ? 'display:inline;' : 'display:none'"></i>
+					<i class='iconfont icon-xiangxiajiantou iright'  :style="show3 ? 'display:none;' : 'display:inline'"></i>
 				</div>
-			</router-link>
+			</div>	
+			<!-- </router-link> -->
 		</li>
 		<li>
-			<router-link to='/list'>
-				<div class='title'>
+			<!-- <router-link to='/list'> -->
+			<div @click='erji4'>
+				<div :class="['title',hasSubStr($route.path, 'list')?'active':'']">
 					<i class='iconfont icon-jinggao ileft'></i>
 					<b>库表设置</b>
-					<i class='iconfont icon-tubiaozhizuo- iright'  @click='erji4()' :style="show4 ? 'display:inline;' : 'display:none'"></i>
-					<i class='iconfont icon-xiangxiajiantou iright'  @click='erji4()' :style="show4 ? 'display:none;' : 'display:inline'"></i>
+					<i class='iconfont icon-tubiaozhizuo- iright' :style="show4 ? 'display:inline;' : 'display:none'"></i>
+					<i class='iconfont icon-xiangxiajiantou iright' :style="show4 ? 'display:none;' : 'display:inline'"></i>
 				</div>
-			</router-link>
+			</div>
+			<!-- </router-link> -->
 		</li>
 		<li>
-			<router-link to='/work'>
-				<div class='title yiji' @click='cooper()'>
+			<!-- <router-link to='/work'> -->
+			<div @click='erji5'>
+				<div :class="['title yiji',hasSubStr($route.path, 'work')?'active':'']" @click='cooper'>
 					<i class='iconfont icon-icon-edit ileft'></i>
 					<b>合作商分组</b>
-					<i class='iconfont icon-tubiaozhizuo- iright'  @click='erji5()' :style="show5 ? 'display:inline;' : 'display:none'"></i>
-					<i class='iconfont icon-xiangxiajiantou iright'  @click='erji5()' :style="show5 ? 'display:none;' : 'display:inline'"></i>
+					<i class='iconfont icon-tubiaozhizuo- iright' :style="show5 ? 'display:inline;' : 'display:none'"></i>
+					<i class='iconfont icon-xiangxiajiantou iright' :style="show5 ? 'display:none;' : 'display:inline'"></i>
 				</div>
-			</router-link>
-			
+			</div>
+			<!-- </router-link> -->
 		</li>
-		<ul v-show='cooperShow'>
-			<router-link to='/zxyh'>
-				<li class='erji' v-for='item in listPoint'>
-					{{item}}
-				</li>
-			</router-link>
+		<ul v-show='cooperShow' style='width:100%;height:350px;overflow-y:scroll'>
+			<li class='erji' v-for='(item,index) in listPoint' :key='index'>
+				<div @click='itemDiv(item,key)' >
+					{{item.groupName}}
+				</div>
+			</li>
 		</ul>
 	</ul>
 	<ul class='list2' id='list2'>
@@ -90,10 +97,9 @@
 	</ul>
   </div>
 </template>
-
 <script>
+import $ from 'jquery';
 export default {
-	
 	data(){
 		return{
 			count:0,
@@ -105,58 +111,100 @@ export default {
 			show5:true,
 			listPoint:[],
 			erjiShow:false,
-			cooperShow:false
+			cooperShow:false,
+			isActive:true,
+			key:0
 		}
 	},
 	methods:{
-		yiji() {
+		hasSubStr: function (str, subStr) {
+			if(str.indexOf(subStr) > -1){
+				return true
+			}
+			return false
+		},
+		yiji(){
+			// debugger
+			if(this.erjiShow){
+				this.$router.push({path:'/'})
+			}else{
+				var that=this
+			setTimeout(function(){
+				that.$router.push({path:'/basic'})
+			},100)
+			}
 			this.erjiShow = !this.erjiShow
+			this.show1 = !this.show1
 		},
 		cooper(){
+			/* if( this.cooperShow ){
+				this.$router.push({path:'/work'})
+			}else{
+				var that=this
+				setTimeout(function(){
+					that.$router.push({path:'/work'})
+				},100)
+				
+			} */
 			this.cooperShow = !this.cooperShow
-			let params = {"jsfType" :"marqueMerchantResource_queryMerGroListService",
-				"valueJsonStr":[{
-					"appCode": "cfbizbaseservice.jr.jd.com",
-					"merchantCode": "123"
-				}]
-			}
-			this.$http.post('/gateway/invokeJsf',params)
-			.then( function ( res ) {
-				//console.log( res.data.object.merGroInfos )
-				/* if( res.data.object.code == "SUCCESS" ){
-					this.tableData1 = res.data.object.merGroInfos
-				}else{
-					alert('请求失败')
-				} */
-				//console.log(res.data.object.merGroInfos)
-				let listMer = res.data.object.merGroInfos;
-				let listLen = listMer.length;
-				for(var i=0; i<listLen; i++ ){
-					for( var key in listMer[i] ){
-						if( key =="merGroName"){
-							this.listPoint.push( listMer[i]["merGroName"] ) 
-						}
-						
-					}
+			let params = {
+					"jsfType": "vehicleMerchantResource_queryMerGroList",
+					"valueJsonStr": [{
+						"pageInfoVo": {
+							"pageNum": 1,
+							"pageSize": 100000
+						},
+						"appCode": "cfbizbaseservice.jr.jd.com",
+						"merchantCode": "1234",
+					}]
 				}
-			}.bind(this))
-			.catch( function( error ) {
+			this.$http.post('/gateway/invokeJsf',params)
+			.then( ( res )=>{
+				console.log( res )
+				this.listPoint = [];
+				let listMer = res.data.object.pageInfoVo.list;
+				let listLen = listMer.length;
+				if( res.data.object.code == "SUCCESS" ){
+					for(var i=0; i<listLen; i++ ){
+						for( var key in listMer[i] ){
+							if( key =="groupName"){
+								//console.log( listMer[i]["groupName"] )
+								this.listPoint.push( listMer[i]) 
+								//console.log( listMer[i] )
+							}
+						}
+					} 
+				}else{
+					alert('网络异常')
+				}
+			})
+			.catch( ( error )=>{
 				console.log( error )
-			}.bind(this))
+			})
+		},
+		itemDiv( item, index ){
+
+			this.$router.push({path:'/grouplabel', query: {id:item.groupId,idx:item.groupName}})
+			
 		},
 		erji1(){
+			this.$router.push({path:'/'})
 			this.show1 = !this.show1
 		},
 		erji2(){
+			this.$router.push({path:'/spu'})
 			this.show2 = !this.show2
 		},
 		erji3(){
+			this.$router.push({path:'/sku'})
 			this.show3 = !this.show3
 		},
 		erji4(){
+			this.$router.push({path:'/list'})
 			this.show4 = !this.show4
 		},
 		erji5(){
+			this.$router.push({path:'/work'})
 			this.show5 = !this.show5
 		},
 		chooseByta () {
@@ -180,17 +228,10 @@ export default {
 				document.getElementById('content').style.left = "4%"
 				document.getElementById('content').style.width = "96%"
 			}
-			
-			
-		},
-		chooseBytb () {
-			
 		},
 		fangdajing(){
 			document.getElementById('fangdajing').style.width="200px"
-
 		}
-   
 	},
 	components:{
 		
@@ -199,17 +240,26 @@ export default {
 </script>
 
 <style lang='scss' scoped>
+	.active{
+		background: #1890ff;
+	}
 	ul,li{
 		list-style:none;
 	}
-	ul>li>a>div{
+	.list>li>div>div{
 		overflow:hidden;
 	}
-	.list>li>a>.title:hover{
-		background:#0086ff;
+	ul>li>a>div>div{
+		overflow:hidden;
+	}
+	.list>li>.title:hover{
+		background:#1890ff;
+	}
+	.list>li>div>.title:hover{
+		background:#1890ff;
 	}
 	.erji:hover{
-		background:#0086ff;
+		background:#1890ff;
 	}
 	.list{
 		margin-top:48px;
@@ -315,4 +365,5 @@ export default {
 			
 		}
 	}
+	
 </style>

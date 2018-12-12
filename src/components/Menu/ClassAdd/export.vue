@@ -1,6 +1,6 @@
 <template>
 	<div>
-		daochu
+		
 	</div>
 </template>
 

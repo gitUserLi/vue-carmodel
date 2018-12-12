@@ -20,6 +20,7 @@ import Gexport from '@/components/Menu/ClassAdd/gexport'
 import Listedit from '@/components/Menu/ClassAdd/listedit'
 import Zxyhadd from '@/components/Menu/ClassAdd/zxyhadd'
 import Basicedit from '@/components/Menu/ClassAdd/basicedit'
+import Grouplabel from '@/components/Menu/ClassAdd/groupLabel'
 
 
 Vue.use(Router)
@@ -74,9 +75,15 @@ export default new Router({
 			component: Listedit
 		},
   	{
-  		path: '/work',
-  		component: Work,
+  		path: '/work', 
+  		component: Work, 
+			redirect: '/grouplabel'
   	},
+		{
+			path: '/grouplabel',
+			name:'Grouplabel',
+			component: Grouplabel
+		},
 		{
 			path: '/zxyh',
 			component: Zxyh

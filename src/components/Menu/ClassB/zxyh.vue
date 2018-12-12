@@ -9,9 +9,6 @@
 			<el-breadcrumb separator="/">
 				<el-breadcrumb-item :to="{ path: '/' }"><b>中信银行-线索模式</b></el-breadcrumb-item>
 			</el-breadcrumb>
-			<el-breadcrumb separator="/">
-				<el-breadcrumb-item :to="{ path: '/' }">高级表单常见于一次性输入和提交大批量数据的场景</el-breadcrumb-item>
-			</el-breadcrumb>
 		</div>
 		<div class='contDiv'>
 			<div class="btndiv">
@@ -85,7 +82,7 @@
 					@size-change="handleSizeChange"
 					@current-change="handleCurrentChange"
 					:current-page="currentPage"
-					:page-sizes="[10, 20, 30]"
+					:page-sizes="[10,30,100]"
 					:page-size="pagesize"
 					layout="total, sizes, prev, pager, next, jumper"
 					>
